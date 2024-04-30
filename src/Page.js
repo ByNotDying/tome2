@@ -1,13 +1,14 @@
   import React, { useEffect, useState, useRef } from 'react';
   import Navbar from './Navbar';
   import { useNavigate } from 'react-router-dom';
-  import './App.css';
+  import './Page.css';
   import { app, analytics } from './firebase.js';
   import { getFirestore, doc, getDoc, updateDoc} from 'firebase/firestore';
   import { getStorage, ref, uploadBytes, getDownloadURL, getMetadata, deleteObject } from 'firebase/storage'
+  
 
 
-  function App() {
+  function Page() {
     // State to track if the page is in edit mode
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState('');
@@ -18,6 +19,7 @@
 
 
     const backgroundRef = useRef(null);
+    const mainContentBorderRef = useRef(null);
     const mainContentRef = useRef(null);
     const nonEditRef = useRef(null);
     const textBoxRef = useRef(null);
@@ -57,7 +59,7 @@
       const fetchBackgroundImageUrl = async () => {
         console.log("pageTitle: '" + pageTitle + "'");
         const storage = getStorage(); // Get the Firebase storage instance
-        const imageRef = ref(storage, `backgrounds/index`); // Create a reference to the file
+        const imageRef = ref(storage, `backgrounds/${pageTitle}`); // Create a reference to the file
 
         try {
           const url = await getDownloadURL(imageRef); // Fetch the URL
@@ -93,10 +95,10 @@
       console.log("Page title: " + pageTitle);
     
       // filename = page title for now, maybe add code to get file extension and append to end of this
-      const fileName = `index`;
+      const fileName = `${pageTitle}`;
     
       // Create a reference to the Firebase Storage location
-      const storageRef = ref(storage, `backgrounds/index`);
+      const storageRef = ref(storage, `backgrounds/${fileName}`);
     
       try {
         // Check if a file with the same name already exists
@@ -148,6 +150,32 @@
     }, [backgroundImageUrl]); // This effect depends on backgroundImageUrl
     
     
+    /*
+    useEffect(() => {
+      const nonEditableContent = nonEditRef.current;
+      if (nonEditableContent) {
+        nonEditableContent.addEventListener('scroll', handleScroll);
+      }
+      return () => {
+        if (nonEditableContent) {
+          nonEditableContent.removeEventListener('scroll', handleScroll);
+        }
+      };
+    }, []);
+
+
+    const handleScroll = () => {
+      const nonEditableContent = nonEditRef.current;
+      const backgroundImage = backgroundRef.current;
+    
+      if (nonEditableContent && backgroundImage) {
+        const scrollPercentage = nonEditableContent.scrollTop / (nonEditableContent.scrollHeight - nonEditableContent.clientHeight);
+        const backgroundScrollPosition = (backgroundImage.height - nonEditableContent.clientHeight) * scrollPercentage;
+    
+        backgroundImage.style.transform = `translateY(-${backgroundScrollPosition}px)`;
+      }
+    };
+    */
 
     useEffect(() => {
       const contentDiv = editMode ? textBoxRef.current : nonEditRef.current;
@@ -192,4 +220,4 @@
     );
   }
 
-  export default App;
+  export default Page;
