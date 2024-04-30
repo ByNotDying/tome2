@@ -1,6 +1,4 @@
 import React, { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 
 const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
   const fileInputRef = useRef(null);
@@ -20,9 +18,7 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
     }
   };
 
-  const handleLoginSignupClick = () => {
-    navigate('/auth'); // Navigate to the AuthPage
-  };
+  
   
   return (
     <nav className="navbar fixed-top navbar-expand-md navbar-light bg-light">
