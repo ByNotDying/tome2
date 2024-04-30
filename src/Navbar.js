@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 
 const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
   const fileInputRef = useRef(null);
-  const navigate = useNavigate();
 
   const handleFileUploadClick = () => {
     fileInputRef.current.click();
