@@ -1,7 +1,31 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/'); // Navigate to the AuthPage after successful logout
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
 
   const handleFileUploadClick = () => {
     fileInputRef.current.click();
@@ -13,8 +37,20 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
 
   const handleSaveClick = () => {
     if (editMode) {
-      handleSave(); // Call the handleSave function from the parent component
+      handleSave();
     }
+  };
+
+  const handleTomeTwoClick = () => {
+    navigate('/');
+  }
+
+  const handleHomeClick = () => {
+    navigate('/page');
+  }
+
+  const handleLoginSignupClick = () => {
+    navigate('/auth');
   };
 
   
@@ -22,8 +58,8 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
   return (
     <nav className="navbar fixed-top navbar-expand-md navbar-light bg-light">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#logo">
-          Tome2
+        <a className="navbar-brand" href="#logo" onClick={handleTomeTwoClick}>
+          Listings
         </a>
         <button
           className="navbar-toggler"
@@ -39,8 +75,8 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="#home">
-                Home
+              <a className="nav-link" href="#home" onClick={handleHomeClick}>
+                Static-Editable-Sample
               </a>
             </li>
             <li className="nav-item">
@@ -71,14 +107,37 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
           </ul>
           <ul className="navbar-nav" style={{ marginLeft: 'auto' }}>
             <li className="nav-item">
-              <button className="btn btn-outline-primary" >
-                Login/Signup
-              </button>
+              {user ? (
+                <div className="dropdown">
+                  <button
+                    className="btn btn-outline-primary dropdown-toggle"
+                    type="button"
+                    id="userDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {user.email || user.displayName}
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby="userDropdown">
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              ) : (
+                <button className="btn btn-outline-primary" onClick={handleLoginSignupClick}>
+                  Login/Signup
+                </button>
+              )}
             </li>
           </ul>
         </div>
       </div>
     </nav>
+
+    
   );
 };
 
