@@ -1,15 +1,34 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';  // Make sure to import Link
-import Navbar from './Navbar';
+import Navbar from './Navbar.js';
 import { useNavigate } from 'react-router-dom';
-import './HomePage.css';
+import './listings.css';
 import { app, analytics } from './firebase.js';
-import { getFirestore, doc, getDoc, getDocs, updateDoc, collection} from 'firebase/firestore';
+import { getFirestore, doc, getDoc, getDocs, updateDoc, addDoc, collection} from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, getMetadata, deleteObject } from 'firebase/storage'
 
 
-function HomePage() {
+
+
+function Listings() {
   const [pageStructure, setPageStructure] = useState([]);
+  const [newTitle, setNewTitle] = useState('');
+  const [newContent, setNewContent] = useState('');
+
+  const handleAddNewEntry = async () => {
+    const db = getFirestore();
+    try {
+      const docRef = await addDoc(collection(db, "pages"), {
+        title: newTitle,
+        content: "This is a newly created page. Please click the 'edit' button above to start adding text to this page, and 'save' when done in order to save the edits. You can upload a background to this page while you are on this page."
+      });
+      console.log("New page added with ID: ", docRef.id);
+      setNewTitle('');  // Clear input after adding
+    } catch (error) {
+      console.error("Error adding new page: ", error);
+    }
+  };
+
 
   useEffect(() => {
     const fetchPages = async () => {
@@ -18,7 +37,8 @@ function HomePage() {
       const pagesSnapshot = await getDocs(pagesCollection);
       let structure = pagesSnapshot.docs.map(doc => ({
         id: doc.id,
-        fields: Object.keys(doc.data())
+        fields: Object.keys(doc.data()),
+        title: doc.data().title
       }));
 
       setPageStructure(structure);
@@ -167,13 +187,15 @@ function HomePage() {
           </div>
         <div className="main-content">
           <div className="non-editable-content">
+          <div>
+            <h1>Listings</h1>
+            <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Title" />
+            <button onClick={handleAddNewEntry}>Add New Page</button>
+          </div>
           <strong>Pages</strong>
           {pageStructure.map(page => (
             <div key={page.id}>
-              |_ <Link to={`/pages/${page.id}`}><strong>{page.id}</strong></Link>  
-              {page.fields.map(field => (
-                <div key={field}>|__ {field}</div>
-              ))}
+              |_ <Link to={`/pages/${page.id}`}><strong>{page.title}</strong></Link>  
             </div>
           ))}
           </div>
@@ -183,4 +205,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default Listings;

@@ -3,10 +3,11 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Navbar';
 import AuthPage from './AuthPage';
-import HomePage from './HomePage';
+import HomePage from './listings';
 import StoryPage from './StoryPage'
 import Page from './Page'
 import './App.css';
+import Listings from './listings';
 
 function App() {
   // You can still maintain any global state or handlers here
@@ -14,10 +15,10 @@ function App() {
     <Router>
       <div className="app-container">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Page />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/pages/:documentId" element={<StoryPage />} />
-          <Route path="/page" element={<Page />} />
+          <Route path="/listings" element={<Listings />} />
         </Routes>
       </div>
     </Router>

@@ -42,11 +42,11 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
   };
 
   const handleTomeTwoClick = () => {
-    navigate('/');
+    navigate('/listings');
   }
 
   const handleHomeClick = () => {
-    navigate('/page');
+    navigate('/');
   }
 
   const handleLoginSignupClick = () => {
