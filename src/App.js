@@ -1,12 +1,12 @@
 // App.js
+import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Navbar';
 import AuthPage from './AuthPage';
-import HomePage from './listings';
+//import ImportingItemThatDoesNotExist from './listings';
 import StoryPage from './StoryPage'
 import Page from './Page'
-import './App.css';
 import Listings from './listings';
 
 function App() {

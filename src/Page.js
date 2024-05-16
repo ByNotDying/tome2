@@ -206,7 +206,7 @@ function Page() {
       <Navbar editMode={editMode} setEditMode={setEditMode} handleSave={handleSave} handleFileUpload={handleFileUpload} />
       <div className="page-content">
         <div className="background-container">
-          <img src={backgroundImageUrl} ref={backgroundRef} alt="Background" style={{width: '100vw', height: {backgroundImageHeight}}} />
+          <img src={backgroundImageUrl} ref={backgroundRef} alt="Background" style={{width: '100vw', height: {backgroundImageHeight}, minHeight: '110vh', objectFit: 'cover'}} />
         </div>
             <div className="main-content" ref={mainContentRef}>
               {editMode ? (

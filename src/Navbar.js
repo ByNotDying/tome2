@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState(null);
   const auth = getAuth();
 
@@ -43,18 +44,19 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
 
   const handleTomeTwoClick = () => {
     navigate('/listings');
-  }
+  };
 
   const handleHomeClick = () => {
     navigate('/');
-  }
+  };
 
   const handleLoginSignupClick = () => {
     navigate('/auth');
   };
 
-  
-  
+  const isHomePage = location.pathname === '/';
+  const isListingsPage = location.pathname === '/listings';
+
   return (
     <nav className="navbar fixed-top navbar-expand-md navbar-light bg-light">
       <div className="container-fluid">
@@ -79,65 +81,69 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
                 Static-Editable-Sample
               </a>
             </li>
-            <li className="nav-item">
-              <button className="btn btn-outline-primary" onClick={handleFileUploadClick}>
-                Upload Background
-              </button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-              />
-            </li>
-            <li className="nav-item">
-              <button
-                className="btn btn-outline-primary"
-                onClick={() => {
-                  if (!editMode) {
-                    setEditMode(!editMode);
-                  } else {
-                    handleSaveClick();
-                  }
-                }}
-              >
-                {editMode ? 'Save' : 'Edit'}
-              </button>
-            </li>
-          </ul>
-          <ul className="navbar-nav" style={{ marginLeft: 'auto' }}>
-            <li className="nav-item">
-              {user ? (
-                <div className="dropdown">
-                  <button
-                    className="btn btn-outline-primary dropdown-toggle"
-                    type="button"
-                    id="userDropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    {user.email || user.displayName}
+            {isHomePage && (
+              <>
+                <li className="nav-item">
+                  <button className="btn btn-outline-primary" onClick={handleFileUploadClick}>
+                    Upload Background
                   </button>
-                  <ul className="dropdown-menu" aria-labelledby="userDropdown">
-                    <li>
-                      <button className="dropdown-item" onClick={handleLogout}>
-                        Logout
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              ) : (
-                <button className="btn btn-outline-primary" onClick={handleLoginSignupClick}>
-                  Login/Signup
-                </button>
-              )}
-            </li>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={handleFileChange}
+                  />
+                </li>
+                <li className="nav-item">
+                  <button
+                    className="btn btn-outline-primary"
+                    onClick={() => {
+                      if (!editMode) {
+                        setEditMode(!editMode);
+                      } else {
+                        handleSaveClick();
+                      }
+                    }}
+                  >
+                    {editMode ? 'Save' : 'Edit'}
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
+          {!isListingsPage && (
+            <ul className="navbar-nav" style={{ marginLeft: 'auto' }}>
+              <li className="nav-item">
+                {user ? (
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-outline-primary dropdown-toggle"
+                      type="button"
+                      id="userDropdown"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {user.email || user.displayName}
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="userDropdown">
+                      <li>
+                        <button className="dropdown-item" onClick={handleLogout}>
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <button className="btn btn-outline-primary" onClick={handleLoginSignupClick}>
+                    Login/Signup
+                  </button>
+                )}
+              </li>
+            </ul>
+          )}
         </div>
       </div>
     </nav>
-
-    
   );
 };
 

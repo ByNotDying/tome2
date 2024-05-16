@@ -47,7 +47,7 @@
   margin-left: 10%;
   margin-right: 10%;
   flex-grow: 1;
-  background-color: rgba(255, 255, 255, 1)*/; /* Use RGBA for semi-transparent background */
+  background-color: rgba(255, 255, 255, 1); /* Use RGBA for semi-transparent background */
   z-index: 1;
   overflow: hidden; /* Hide any content that exceeds the container */
 }
@@ -67,8 +67,8 @@
   width: 90%;
   height: calc(100vh - 50px); /* Adjust the height to account for the navbar and some padding */
   box-sizing: border-box;
-  padding: 20px;
-  margin: 5%;
+  padding: 18px;
+  margin: 0%;
   text-align: left;
   overflow-y: scroll; /* Add scrollbars if the content exceeds the height */
   background-color: white;

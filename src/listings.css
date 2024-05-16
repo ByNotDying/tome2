@@ -34,16 +34,43 @@
   flex-shrink: 0;
 }
 
-
+.page-content {
+  display: flex;
+  flex-grow: 1;
+  height: calc(100vh - 60px); /* Adjust the height to account for the navbar */
+}
 
 .main-content {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   margin-left: 10%;
   margin-right: 10%;
   flex-grow: 1;
-  background-color: rgba(255, 255, 255, 1)*/; /* Use RGBA for semi-transparent background */
+  background-color: rgba(255, 255, 255, 1); /* Use RGBA for semi-transparent background */
+  z-index: 1;
   overflow: hidden; /* Hide any content that exceeds the container */
 }
 
+.editable-content {
+  width: 90%;
+  height: calc(100vh - 50px); /* Adjust the height to account for the navbar and some padding */
+  padding: 20px;
+  margin:5%;
+  box-sizing: border-box;
+  resize: none;
+  background-color: white;
+  overflow-y: scroll; /* Add scrollbars if the content exceeds the height */
+}
+
+.non-editable-content {
+  width: 100%;
+  height: calc(100vh - 50px); /* Adjust the height to account for the navbar and some padding */
+  box-sizing: border-box;
+  padding: 18px;
+  margin: 0%;
+  text-align: left;
+  overflow-y: scroll; /* Add scrollbars if the content exceeds the height */
+  background-color: white;
+  white-space: pre-wrap;
+}

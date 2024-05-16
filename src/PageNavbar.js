@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import {useNavigate} from 'react-router-dom'
+import { Collection } from 'firebase/firestore';
 
 const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
   const fileInputRef = useRef(null);
