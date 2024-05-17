@@ -183,7 +183,7 @@ function Listings() {
       <Navbar />
       <div className="page-content">
           <div className="background-container">
-            <img src={backgroundImageUrl} ref={backgroundRef} alt="Background" style={{width: '100vw', height: {backgroundImageHeight}}} />
+            <img src={backgroundImageUrl} ref={backgroundRef} alt="Background" style={{width: '100vw', height: {backgroundImageHeight}, minHeight:'110vh', objectFit: 'cover'}} />
           </div>
         <div className="main-content">
           <div className="non-editable-content">
