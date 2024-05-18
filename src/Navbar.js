@@ -54,7 +54,7 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
     navigate('/auth');
   };
 
-  const isHomePage = location.pathname === '/';
+  const isEditablePage = location.pathname === '/' || location.pathname.startsWith('/pages/');
   const isListingsPage = location.pathname === '/listings';
 
   return (
@@ -81,7 +81,7 @@ const Navbar = ({ editMode, setEditMode, handleSave, handleFileUpload }) => {
                 Static-Editable-Sample
               </a>
             </li>
-            {isHomePage && (
+            {isEditablePage && (
               <>
                 <li className="nav-item">
                   <button className="btn btn-outline-primary" onClick={handleFileUploadClick}>
